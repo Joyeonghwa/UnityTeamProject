@@ -46,7 +46,7 @@ public class UserDataManager : MonoBehaviour
     {
         // 회원가입을 한다.(=userData를 userDB에 저장한다.)
         // 회원가입을 하는 동안 다른 UI를 클릭하지 못하게 가림막을 활성화한다.
-        UI_Manager.Inst.SetCover(true);
+        StartUI_Manager.Inst.SetCover(true);
 
         // 요청의 종류와 회원가입으로 저장할 데이터를 form에 작성하고 이를 웹에 Post한다.
         WWWForm form = new WWWForm();
@@ -74,7 +74,7 @@ public class UserDataManager : MonoBehaviour
             {
                 // 경고 메시지를 업데이트한다.
                 txtAlert.text = result.msg;
-                UI_Manager.Inst.SetCover(false);
+                StartUI_Manager.Inst.SetCover(false);
             }
         }
     }
@@ -83,7 +83,7 @@ public class UserDataManager : MonoBehaviour
     {
         // 로그인을 시도한다.
         // 로그인하는 동안 다른 UI를 클릭하지 못하게 가림막을 활성화한다.
-        UI_Manager.Inst.SetCover(true);
+        StartUI_Manager.Inst.SetCover(true);
 
         // 요청의 종류와 로그인에 필요한 데이터를 form에 작성하고 이를 웹에 Post한다.
         WWWForm form = new WWWForm();
@@ -111,7 +111,7 @@ public class UserDataManager : MonoBehaviour
             {
                 // 경고 메시지를 업데이트한다.
                 txtAlert.text = result.msg;
-                UI_Manager.Inst.SetCover(false);
+                StartUI_Manager.Inst.SetCover(false);
             }
         }
     }

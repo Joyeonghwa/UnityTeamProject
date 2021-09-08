@@ -43,7 +43,7 @@ public class SignUpUI : BaseUI
     private void OnClickBackward()
     {
         // 뒤로가기
-        UI_Manager.Inst.ChangeUI(UI_Type.LOGIN);
+        StartUI_Manager.Inst.ChangeUI(UI_Type.LOGIN);
     }
 
     public void OnValueChangedID(TMP_InputField txtID)

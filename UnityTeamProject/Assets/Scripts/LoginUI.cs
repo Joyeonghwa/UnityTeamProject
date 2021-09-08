@@ -37,7 +37,7 @@ public class LoginUI : BaseUI
 
     private void OnClickSignUp()
     {
-        UI_Manager.Inst.ChangeUI(UI_Type.SIGN_UP);
+        StartUI_Manager.Inst.ChangeUI(UI_Type.SIGN_UP);
     }
 
     private void OnClickExit()

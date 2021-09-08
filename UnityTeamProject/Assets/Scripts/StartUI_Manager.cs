@@ -12,11 +12,11 @@ public enum UI_Type
     ROOM
 }
 
-public class UI_Manager : MonoBehaviour
+public class StartUI_Manager : MonoBehaviour
 {
-    public static UI_Manager uiManager;
+    public static StartUI_Manager uiManager;
 
-    public static UI_Manager Inst
+    public static StartUI_Manager Inst
     {
         get
         {
@@ -29,8 +29,8 @@ public class UI_Manager : MonoBehaviour
     public LoginUI logInUI;
     public SignUpUI signUpUI;
     public TitleUI titleUI;
-    public GameObject lobbyUI;
-    public GameObject roomUI;
+    public LobbyUI lobbyUI;
+    public RoomUI roomUI;
 
     public GameObject cover;
 
@@ -44,7 +44,6 @@ public class UI_Manager : MonoBehaviour
     {
         uiManager = this;
         curUI = logInUI;
-        DontDestroyOnLoad(gameObject);
     }
 
     public void ChangeUI(UI_Type type)
@@ -63,8 +62,10 @@ public class UI_Manager : MonoBehaviour
                 curUI = titleUI;
                 break;
             case UI_Type.LOBBY:
+                curUI = lobbyUI;
                 break;
             case UI_Type.ROOM:
+                curUI = roomUI;
                 break;
         }
 

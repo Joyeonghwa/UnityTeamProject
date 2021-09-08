@@ -15,4 +15,21 @@ public class TitleUI : BaseUI
     {
         
     }
+
+    private void OnClickGameStart()
+    {
+        NetworkManager.Inst.JoinLobby();
+    }
+
+    private void OnClickOption()
+    {
+        
+    }
+
+    private void OnClickExit()
+    {
+        Debug.Log("Application Quit");
+        NetworkManager.Inst.DisConnect();
+        Application.Quit();
+    }
 }
