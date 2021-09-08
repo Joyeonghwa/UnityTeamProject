@@ -27,11 +27,11 @@ public class LoginUI : BaseUI
     private void OnClickLogIn()
     {
         txtAlert.text = null;
-        if (txtAlert.text == null && id == null)        txtAlert.text = "! 아이디 입력란이 비었습니다.";
-        if (txtAlert.text == null && password == null)  txtAlert.text = "! 비밀번호 입력란이 비었습니다.";
+        if (txtAlert.text == null && string.IsNullOrEmpty(id))        txtAlert.text = "! 아이디 입력란이 비었습니다.";
+        if (txtAlert.text == null && string.IsNullOrEmpty(password))  txtAlert.text = "! 비밀번호 입력란이 비었습니다.";
         txtAlert.color = Color.red;
 
-        if (txtAlert != null)
+        if (txtAlert.text == null)
             StartCoroutine(UserDataManager.Inst.Login(id, password, txtAlert));
     }
 

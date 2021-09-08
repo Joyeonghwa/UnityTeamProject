@@ -30,9 +30,9 @@ public class SignUpUI : BaseUI
     {
         // 회원 가입을 한다.
         txtAlert.text = null;
-        if (txtAlert.text == null && id == null)                 txtAlert.text = "! 아이디 입력란이 비었습니다.";
-        if (txtAlert.text == null && password == null)           txtAlert.text = "! 비밀번호 입력란이 비었습니다.";
-        if (txtAlert.text == null && passwordCheck == null)      txtAlert.text = "! 비밀번호 재확인을 해주세요.";
+        if (txtAlert.text == null && string.IsNullOrEmpty(id))                 txtAlert.text = "! 아이디 입력란이 비었습니다.";
+        if (txtAlert.text == null && string.IsNullOrEmpty(password))           txtAlert.text = "! 비밀번호 입력란이 비었습니다.";
+        if (txtAlert.text == null && string.IsNullOrEmpty(passwordCheck))      txtAlert.text = "! 비밀번호 재확인을 해주세요.";
         if (txtAlert.text == null && password != passwordCheck)  txtAlert.text = "! 비밀번호와 재확인 번호가 서로 다릅니다.";
         txtAlert.color = Color.red;
         
