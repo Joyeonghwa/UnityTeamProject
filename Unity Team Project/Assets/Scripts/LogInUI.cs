@@ -65,4 +65,9 @@ public class LoginUI : BaseUI
         txtPassword.text = "";
         txtAlert.text = "";
     }
+
+    public void HI()
+    {
+
+    }
 }
