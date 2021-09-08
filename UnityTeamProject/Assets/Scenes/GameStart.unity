@@ -940,7 +940,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 154526256}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 876712191}
+        m_TargetAssemblyTypeName: UnityEngine.Component, UnityEngine
+        m_MethodName: SendMessage
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnClickOption
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &154526256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2022,7 +2034,7 @@ GameObject:
   - component: {fileID: 375497565}
   - component: {fileID: 375497569}
   m_Layer: 5
-  m_Name: UI_Manager
+  m_Name: Canvas_StartUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2129,8 +2141,8 @@ MonoBehaviour:
   logInUI: {fileID: 487973141}
   signUpUI: {fileID: 412075359}
   titleUI: {fileID: 876712191}
-  lobbyUI: {fileID: 0}
-  roomUI: {fileID: 0}
+  lobbyUI: {fileID: 870658401}
+  roomUI: {fileID: 1977491977}
   cover: {fileID: 1967658410}
 --- !u!1 &389317197
 GameObject:
@@ -4813,6 +4825,7 @@ GameObject:
   - component: {fileID: 870658398}
   - component: {fileID: 870658400}
   - component: {fileID: 870658399}
+  - component: {fileID: 870658401}
   m_Layer: 5
   m_Name: LobbyUI
   m_TagString: Untagged
@@ -4884,6 +4897,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 870658397}
   m_CullTransparentMesh: 1
+--- !u!114 &870658401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870658397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ac96a156c02ef4b8ed43fc1fd2ef8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &876712187
 GameObject:
   m_ObjectHideFlags: 0
@@ -6851,7 +6876,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1268097702}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 876712191}
+        m_TargetAssemblyTypeName: UnityEngine.Component, UnityEngine
+        m_MethodName: SendMessage
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnClickExit
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1268097702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8255,7 +8292,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1456430951}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 876712191}
+        m_TargetAssemblyTypeName: UnityEngine.Component, UnityEngine
+        m_MethodName: SendMessage
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnClickGameStart
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1456430951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11465,6 +11514,7 @@ GameObject:
   - component: {fileID: 1977491974}
   - component: {fileID: 1977491976}
   - component: {fileID: 1977491975}
+  - component: {fileID: 1977491977}
   m_Layer: 5
   m_Name: RoomUI
   m_TagString: Untagged
@@ -11534,6 +11584,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977491973}
   m_CullTransparentMesh: 1
+--- !u!114 &1977491977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977491973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc85b97dbd604bf4d91eea616be41e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2021148212
 GameObject:
   m_ObjectHideFlags: 0
