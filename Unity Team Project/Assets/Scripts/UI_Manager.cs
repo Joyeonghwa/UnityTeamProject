@@ -26,7 +26,7 @@ public class UI_Manager : MonoBehaviour
 
     private BaseUI curUI;
 
-    public LogInUI logInUI;
+    public LoginUI logInUI;
     public SignUpUI signUpUI;
     public TitleUI titleUI;
     public GameObject lobbyUI;
