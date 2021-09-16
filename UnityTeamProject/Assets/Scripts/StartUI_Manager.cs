@@ -9,6 +9,7 @@ public enum UI_Type
     SIGN_UP,
     TITLE,
     LOBBY,
+    ROOMCREATE,
     ROOM
 }
 
@@ -30,6 +31,7 @@ public class StartUI_Manager : MonoBehaviour
     public SignUpUI signUpUI;
     public TitleUI titleUI;
     public LobbyUI lobbyUI;
+    public RoomCreateUI roomCreateUI;
     public RoomUI roomUI;
 
     public GameObject cover;
@@ -63,6 +65,9 @@ public class StartUI_Manager : MonoBehaviour
                 break;
             case UI_Type.LOBBY:
                 curUI = lobbyUI;
+                break;
+            case UI_Type.ROOMCREATE:
+                curUI = roomCreateUI;
                 break;
             case UI_Type.ROOM:
                 curUI = roomUI;

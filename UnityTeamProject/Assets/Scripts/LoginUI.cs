@@ -5,34 +5,22 @@ using TMPro;
 
 public class LoginUI : BaseUI
 {
-    public TMP_InputField txtID;
+    public TMP_InputField txtEmail;
     public TMP_InputField txtPassword;
     public TextMeshProUGUI txtAlert;
 
-    string id;
+    string email;
     string password;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnClickLogIn()
     {
         txtAlert.text = null;
-        if (txtAlert.text == null && string.IsNullOrEmpty(id))        txtAlert.text = "! 아이디 입력란이 비었습니다.";
+        if (txtAlert.text == null && string.IsNullOrEmpty(email))        txtAlert.text = "! 이메일 입력란이 비었습니다.";
         if (txtAlert.text == null && string.IsNullOrEmpty(password))  txtAlert.text = "! 비밀번호 입력란이 비었습니다.";
         txtAlert.color = Color.red;
 
         if (txtAlert.text == null)
-            StartCoroutine(UserDataManager.Inst.Login(id, password, txtAlert));
+            NetworkManager.Inst.Login(email, password, txtAlert);
     }
 
     private void OnClickSignUp()
@@ -46,9 +34,9 @@ public class LoginUI : BaseUI
         Application.Quit();
     }
 
-    public void OnValueChangedID(TMP_InputField txtID)
+    public void OnValueChangedEmail(TMP_InputField txtEmail)
     {
-        id = txtID.text;
+        email = txtEmail.text;
     }
 
     public void OnValueChangedPassword(TMP_InputField txtPassword)
@@ -58,10 +46,9 @@ public class LoginUI : BaseUI
 
     public override void Activate()
     {
-        Debug.Log("Login Activated");
         base.Activate();
 
-        txtID.text = "";
+        txtEmail.text = "";
         txtPassword.text = "";
         txtAlert.text = "";
     }

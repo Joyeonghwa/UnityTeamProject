@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6552596422783184699}
   - component: {fileID: 8221315491417113348}
   - component: {fileID: 3307594427240716395}
+  - component: {fileID: 314239340911304074}
   m_Layer: 5
   m_Name: Panel_ProfileInfoUI
   m_TagString: Untagged
@@ -60,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6179246, g: 1, b: 0.6843722, a: 0.19607843}
+  m_Color: {r: 0.6179246, g: 1, b: 0.6843722, a: 0.2}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -77,6 +78,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &314239340911304074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592314846517750700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b2e22d7d5a023645a759383f7f58bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  txtNickName: {fileID: 4213321763865996978}
+  imgReadyState: {fileID: 3266711985655510244}
+  spriteReady: {fileID: 21300000, guid: fd47c8b4ebfbd4339858d4d23f587519, type: 3}
+  spriteHost: {fileID: 21300000, guid: 38e9aad0949bd5a4a9f2ca4dec3aed70, type: 3}
 --- !u!1 &4446078056407801278
 GameObject:
   m_ObjectHideFlags: 0
