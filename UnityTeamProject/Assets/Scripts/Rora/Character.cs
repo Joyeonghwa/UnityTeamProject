@@ -9,68 +9,59 @@ public enum PlayerState
     Idle = 0,
     Move, //bool로 체크하기
     Jump,
-    MainAttack,SubAttack,VSkill,
-    QSkill,ESkill,Teleport,FSkill,
+    MainAttack, SubAttack, VSkill,
+    QSkill, ESkill, Teleport, FSkill,
     CC,
     Die
 }
 
 public class Character : MonoBehaviour
-    {
-        //상태
-            // == 상태 ==
-        [HideInInspector] public PlayerState state;
+{
+    // 상태
+    // == 상태 ==
+    [HideInInspector] public PlayerState state;
 
 
-       //이동
-     CharacterController characterController;
-     Vector3 Direction;
-     [Range(0.0f, 15.0f)]
-     public float MoveSpeed = 7.0f;
+    // 이동
+    CharacterController characterController;
+    Vector3 Direction;
+    [Range(0.0f, 15.0f)]
+    public float MoveSpeed = 7.0f;
 
 
     // 회전
     // ==방향 회전 ==
-        [Range(0.1f, 2.0f)]
-        public float MouseSensitivity = 2.0f;
-        float VerticalAngle =0.0f;
-        float HorizontalAngle;
-        float RotationSpeed = 360.0f;
-        Vector3 currentAngles;
+    [Range(0.1f, 2.0f)]
+    public float MouseSensitivity = 2.0f;
+    float VerticalAngle = 0.0f;
+    float HorizontalAngle;
+    float RotationSpeed = 360.0f;
+    Vector3 currentAngles;
 
-            // == 카메라 회전 ==
-        Vector3 c_currentAngles;
-        public GameObject camera;
-        [Range(0.0f, 90.0f)]
-        public float CameraAngle;
+    // == 카메라 회전 ==
+    Vector3 c_currentAngles;
+    public GameObject camera;
+    [Range(0.0f, 90.0f)]
+    public float CameraAngle;
 
-            // == 변수
-        public bool IsTurnCameraEnable = true;
-        public bool IsTurnPlayerEnable = true;
+    // == 변수
+    public bool IsTurnCameraEnable = true;
+    public bool IsTurnPlayerEnable = true;
 
+    // 중력
+    [Range(0.0f, 15.0f)] public float DefaultGravity = 10.0f;
+    float Gravity = 10.0f;
+    [Range(-10.0f, 10.0f)] public float VerticalSpeed = 0.0f;
+    bool IsGrounded = true;
 
-
-        // 중력
-        [Range(0.0f, 15.0f)] public float DefaultGravity = 10.0f;
-        float Gravity = 10.0f;
-        [Range(-10.0f, 10.0f)] public float VerticalSpeed = 0.0f;
-        bool IsGrounded = true;
-
-
-
-    //변수
+    // 변수
     public Animator animator;
     private bool IsMoving = false;
-
-
-
-
 
     private void Start()
     {
         Initialized();
     }
-
 
     public void Initialized()
     {
@@ -78,22 +69,22 @@ public class Character : MonoBehaviour
         characterController = this.GetComponent<CharacterController>();
         //state = PlayerState.Idle;
 
-
         // == 회전
         VerticalAngle = 0.0f;
         HorizontalAngle = transform.localEulerAngles.y;
         currentAngles = transform.localEulerAngles;
+
         //== 중력
         Gravity = DefaultGravity;
     }
 
     private void Update()
-        {
+    {
         // 물리
-       // MovePlayer();
+        MovePlayer();
         GetGravity();
-        if (IsTurnCameraEnable)    TurnCamera();
-        if (IsTurnPlayerEnable)        TurnPlayer();
+        if (IsTurnCameraEnable) TurnCamera();
+        if (IsTurnPlayerEnable) TurnPlayer();
         Skill();
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -103,8 +94,7 @@ public class Character : MonoBehaviour
         }
 
         // 점프 관련
-        
-        if (IsJumping && IsGrounded)//바닥에 착지
+        if (IsJumping && IsGrounded)    //바닥에 착지
         {
             IsJumping = false;
             animator.SetBool("Jump", IsJumping);
@@ -114,34 +104,33 @@ public class Character : MonoBehaviour
         }
     }
 
-
-
-        private void FixedUpdate()
+    private void FixedUpdate()
+    {
+        switch (state)
         {
-            switch (state)
-            {
-                case PlayerState.Idle:              { IdleState(); }   break;
-                case PlayerState.Move:
+            case PlayerState.Move:
                 {
-                     if (Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
                         Debug.Log("점프");
                         state = PlayerState.Jump;
                     }
-                    else  MovePlayer();
+                    else MovePlayer();
 
-                }   break;
-                case PlayerState.MainAttack:    { MainAttack(); }   break;
-                case PlayerState.SubAttack:     { SubAttack(); }   break;
-                case PlayerState.VSkill:           { VSkill(); }   break;
-                case PlayerState.QSkill:           { QSkill(); }   break;
-                case PlayerState.ESkill:           { ESkill(); }   break;
-                case PlayerState.Teleport:       { Teleport(); }   break;
-                case PlayerState.FSkill:           { FSkill(); }   break;
-                case PlayerState.Jump:           { JumpPlayer(); } break; //
-            case PlayerState.Die:               { Die(); }    break;
-            }
+                }
+                break;
+            case PlayerState.Idle:          IdleState();    break;
+            case PlayerState.MainAttack:    MainAttack();   break;
+            case PlayerState.SubAttack:     SubAttack();    break;
+            case PlayerState.VSkill:        VSkill();       break;
+            case PlayerState.QSkill:        QSkill();       break;
+            case PlayerState.ESkill:        ESkill();       break;
+            case PlayerState.Teleport:      Teleport();     break;
+            case PlayerState.FSkill:        FSkill();       break;
+            case PlayerState.Jump:          JumpPlayer();   break; //
+            case PlayerState.Die:           Die();          break;
         }
+    }
 
     public void IdleState()
     {
@@ -161,12 +150,12 @@ public class Character : MonoBehaviour
 
 
 
-    int SkillNumber=0;
+    int SkillNumber = 0;
 
-    void  Skill()
+    void Skill()
     {
         if (Input.GetMouseButtonDown(0)) //주공격
-        {       
+        {
             SkillNumber = 1;
             state = PlayerState.MainAttack;
             animator.SetTrigger("SkillTrigger");
@@ -187,7 +176,7 @@ public class Character : MonoBehaviour
         {
             SkillNumber = 4;
             state = PlayerState.QSkill;
-          animator.SetTrigger("SkillTrigger");
+            animator.SetTrigger("SkillTrigger");
         }
         else if (Input.GetKeyDown(KeyCode.E)) //E스킬
         {
@@ -209,11 +198,7 @@ public class Character : MonoBehaviour
         }
 
         animator.SetInteger("SkillNumber", SkillNumber);
-
     }
-
-
-
 
     void MainAttack()
     {
@@ -255,10 +240,6 @@ public class Character : MonoBehaviour
         Debug.Log("죽음");
     }
 
-
-
-
-
     void MovePlayer()
     {
         Direction = Vector3.zero;
@@ -267,7 +248,7 @@ public class Character : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
 
         Direction = new Vector3(horizontal, VerticalSpeed, vertical);
-       
+
         if (Direction.sqrMagnitude > 1.0f) // 빠르게 속도가 증가하는 것을 막아줌.
         {
             Direction.Normalize();
@@ -288,44 +269,38 @@ public class Character : MonoBehaviour
         {
             IsMoving = false;
         }
-       
+
         animator.SetBool("IsMoving", IsMoving);
     }
 
-
-
-
-
-
-
     void GetGravity()
+    {
+        Debug.Log("Gravity: " + Gravity);
+        Debug.Log("Vertical Speed: " + VerticalSpeed);
+
+        Gravity = DefaultGravity;
+        VerticalSpeed -= Gravity * Time.deltaTime;
+
+        //if (VerticalSpeed < -10.0f)
+        //{
+        //    VerticalSpeed = -10.0f; //VerticalSpeed 최솟값 -10으로 고정
+        //}
+
+        var verticalMove = new Vector3(0, VerticalSpeed * Time.deltaTime, 0);
+
+        var flag = characterController.Move(verticalMove);
+
+        if ((flag & CollisionFlags.Below) != 0)
         {
-            Gravity = DefaultGravity;
-            VerticalSpeed -= Gravity * Time.deltaTime;
-
-            if (VerticalSpeed < -10.0f)
-            {
-                VerticalSpeed = -10.0f; //VerticalSpeed 최솟값 -10으로 고정
-            }
-            
-            var verticalMove = new Vector3(0, VerticalSpeed * Time.deltaTime, 0);
-
-            var flag = characterController.Move(verticalMove);
-
-            if ((flag & CollisionFlags.Below) != 0) 
-            {
-                VerticalSpeed = 0;
-                IsGrounded = true;
-            }
-            else
-            {
-                IsGrounded = false;
-            }
-          
+            VerticalSpeed = 0;
+            IsGrounded = true;
+        }
+        else
+        {
+            IsGrounded = false;
         }
 
-
-
+    }
 
     void TurnCamera()
     {
@@ -354,33 +329,7 @@ public class Character : MonoBehaviour
         transform.localEulerAngles = currentAngles;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // ==== 미 완 성
-    
     [Range(5.0f, 10.0f)]
     public float GroundJumpPower = 7.0f; //점프 파워
     public float AirJumpPower = 7.0f;      //점프 파워
@@ -393,8 +342,8 @@ public class Character : MonoBehaviour
     int AirJumpCount = 0;
     float SpaceTime = 0;
 
-   public float KeepAirGravity = 0.1f;
-   public float GroundJumpGravity = 7f;
+    public float KeepAirGravity = 0.1f;
+    public float GroundJumpGravity = 7f;
     bool StartJump = false;
     bool IsJumping = false;
 
@@ -432,10 +381,10 @@ public class Character : MonoBehaviour
     //
     int JumpState = 0;
     bool IsDoubleJumpEnable = false;
-    public float JumpSpeed = 5.0f; 
+    public float JumpSpeed = 5.0f;
     public float DoubleJumpSpeed = 7.0f;
     //[Range(-10.0f, 10.0f)]
-   // public float VerticalSpeed = 0.0f;
+    // public float VerticalSpeed = 0.0f;
 
     void JumpPlayer()
     {
@@ -477,7 +426,7 @@ public class Character : MonoBehaviour
         if (Direction.sqrMagnitude > 0.0f) { MovePlayer(); }
 
 
-            if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             if (IsGrounded && !IsDoubleJumpEnable) JumpState = 1;
             else if (!IsGrounded && IsDoubleJumpEnable) JumpState = 2;
@@ -520,13 +469,13 @@ public class Character : MonoBehaviour
 }
 
 
-  
 
- 
 
-   
 
-    
+
+
+
+
 
 
 
