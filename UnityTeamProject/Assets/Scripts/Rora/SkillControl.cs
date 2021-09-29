@@ -19,6 +19,7 @@ class SkillControl : MonoBehaviour
     public Transform cameraObjTransform;
     public GameObject wand;
 
+    public bool IsFixedWand = true;
 
     void Start()
     {
@@ -33,6 +34,7 @@ class SkillControl : MonoBehaviour
     void ControlWand()
     {
         //SetEachWeight
+        if (!IsFixedWand)
         {
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, posWeight);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, rotWeight);
@@ -45,11 +47,12 @@ class SkillControl : MonoBehaviour
 
         //LookAtObj
         {
-            animator.SetLookAtWeight(1.0f);
-            animator.SetLookAtPosition(cameraObjTransform.position);
-            wand.GetComponent<Transform>().LookAt(cameraObjTransform.position - new Vector3(0.0f, 90.0f, 0.0f));
-
+           animator.SetLookAtWeight(1.0f);
+           animator.SetLookAtPosition(cameraObjTransform.position);
         }
+
+        //지팡이
+        //wand.GetComponent<Transform>().LookAt(cameraObjTransform.position - new Vector3(0.0f, 90.0f, 0.0f));
     }
 
 

@@ -22,4 +22,9 @@ public class CaseyAttack : MonoBehaviour
             Debug.Log("MoseL");
         }
     }
+
+    void F_Attack()
+    {
+
+    }
 }
