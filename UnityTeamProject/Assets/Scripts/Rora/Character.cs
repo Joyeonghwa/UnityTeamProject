@@ -90,7 +90,7 @@ public class Character : MonoBehaviour
     private void Update()
         {
         // 물리
-       // MovePlayer();
+        MovePlayer();
         GetGravity();
         if (IsTurnCameraEnable)    TurnCamera();
         if (IsTurnPlayerEnable)        TurnPlayer();
@@ -123,12 +123,7 @@ public class Character : MonoBehaviour
                 case PlayerState.Idle:              { IdleState(); }   break;
                 case PlayerState.Move:
                 {
-                     if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        Debug.Log("점프");
-                        state = PlayerState.Jump;
-                    }
-                    else  MovePlayer();
+                    MovePlayer();
 
                 }   break;
                 case PlayerState.MainAttack:    { MainAttack(); }   break;
