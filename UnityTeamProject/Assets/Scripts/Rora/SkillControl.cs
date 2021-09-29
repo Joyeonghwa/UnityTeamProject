@@ -30,6 +30,7 @@ class SkillControl : MonoBehaviour
     {
         if(IsControlWeaponEnable) ControlWand();
     }
+   
 
     void ControlWand()
     {

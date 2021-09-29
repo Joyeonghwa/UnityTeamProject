@@ -134,7 +134,7 @@ public class Character : MonoBehaviour
                 case PlayerState.Teleport:       { Teleport(); }   break;
                 case PlayerState.FSkill:           { FSkill(); }   break;
                 case PlayerState.Jump:           { JumpPlayer(); } break; //
-            case PlayerState.Die:               { Die(); }    break;
+                case PlayerState.Die:               { Die(); }    break;
             }
         }
 
@@ -434,32 +434,6 @@ public class Character : MonoBehaviour
 
     void JumpPlayer()
     {
-        /*
-        if (MaxAirJumpCount > AirJumpCount)//점프 가능
-        {
-            StartJump = true;
-            animator.SetBool("StartJump", StartJump);
-            IsJumping = true;
-            animator.SetBool("IsJumping", IsJumping);
-
-            if (IsGrounded)              //땅 점프
-            {
-                VerticalSpeed = GroundJumpPower;  //땅 점프 파워
-                Debug.Log("땅 점프");
-                ++GroundJumpCount;
-            }
-            else                        //공중 점프
-            {
-                VerticalSpeed = AirJumpPower; //공중점프 파워
-                Debug.Log("공중 점프");
-                ++AirJumpCount;
-
-            }
-            Direction.y = VerticalSpeed * Time.deltaTime;
-            Invoke("StartJumpReset", 0.5f); //0.5초후에 실행
-
-            characterController.Move(Direction * Time.deltaTime);
-        }*/
         switch (JumpState)
         {
             case 0: { Gravity = DefaultGravity; } break; // 디폴트
