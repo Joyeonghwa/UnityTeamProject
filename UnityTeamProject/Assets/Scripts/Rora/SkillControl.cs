@@ -20,30 +20,30 @@ class SkillControl : MonoBehaviour
     private Animator animator;
     public Transform cameraObjTransform;
     public GameObject wand;
+
     [HideInInspector] public Camera camera;
+
     private float cameraDefaultFOV;
     public float cameraSpeed = 2.0f;
 
-    // 스킬
     public ParticleSystem[] particles;
     [HideInInspector] public GameObject[] characterModels;
 
-
-    ChangeShader CharacterShader;
-    ChangeShader WandShader;
-
+    // == 스킬
+    // 텔레포트
+    bool IsTeleportEnd=true;
+    Teleport TeleportSkill;
     
 
     private void Awake()
     {
-        CharacterShader = new ChangeShader(characterModels[0]);
-        WandShader = new ChangeShader(characterModels[1]);
+        TeleportSkill = new Teleport(0, particles[0], characterModels, camera);
         cameraDefaultFOV = camera.fieldOfView;
     }
+
     void Start()
     {
         animator = this.GetComponent<Animator>();
-        particles[0].Stop();
     }
 
     private void OnAnimatorIK(int layerIndex)
@@ -54,13 +54,15 @@ class SkillControl : MonoBehaviour
 
     private void Update()
     {
-        if (teleportOn)
-        {
-            camera.fieldOfView -= Time.deltaTime * cameraSpeed;
+        if (!IsTeleportEnd)
+        { 
             this.GetComponent<Character>().teleportMove();
-            
         }
-        else camera.fieldOfView = cameraDefaultFOV;
+        else
+        {
+           if(camera.fieldOfView >= cameraDefaultFOV) camera.fieldOfView -= Time.deltaTime * cameraSpeed;   
+        }
+        
     }
     void ControlWand()
     {
@@ -93,108 +95,96 @@ class SkillControl : MonoBehaviour
         Debug.Log("DEATH");
     }
 
-    bool teleportOn = false;
+    
 
     public void TeleportOnSkillEventStart()
     {
-        particles[0].Play();
-        Debug.Log("텔레포트 애니메이션 이벤트 시작");
-
+        TeleportSkill.OnSkillEventStart();
     }    
 
     public void TeleportOnSkillEvent()
     {
-        WandShader.ChangeTransparent(0.0f, 1);
-        CharacterShader.ChangeTransparent(0.0f, 1);
-        Debug.Log("텔레포트 애니메이션 이벤트중");
-        teleportOn = true;
+        TeleportSkill.OnSkillEvent();
+        IsTeleportEnd = false;
     }
 
     public void TeleportOnSkillEnd()
     {
-        Debug.Log("텔레포트 애니메이션 이벤트 끝");
-       CharacterShader.ChangeTransparent(1.0f,0);
-       WandShader.ChangeTransparent(1.0f,0);
-        teleportOn = false;
+        TeleportSkill.OnSkillEnd();
+        IsTeleportEnd = true;
     }
 }
 
-class ChangeShader
-{
-    private Material mat;
-    private Shader shaderStandard;
-    private Renderer renderer;
-    private GameObject characterModel;
 
-    public ChangeShader(GameObject characterModel_)
-    {
-        characterModel = characterModel_;
-
-        renderer = characterModel.GetComponent<Renderer>();
-        mat = renderer.material;
-        shaderStandard = Shader.Find("Standard");
-        if (!shaderStandard) Debug.Log("shaderStandard not Found");
-
-        if (!characterModel.GetComponent<SkinnedMeshRenderer>())
-        {
-            MeshRenderer meshrenderer = characterModel.GetComponent<MeshRenderer>();
-            meshrenderer.material.shader = shaderStandard;
-        }
-        else
-        {
-            SkinnedMeshRenderer meshrenderer = characterModel.GetComponent<SkinnedMeshRenderer>();
-            meshrenderer.material.shader = shaderStandard;
-        }
-        
-      
-
-     
-
-
-    }
-
-    public void ChangeTransparent(float value ,int mode)
-    {
-        mat.SetColor("_Color", new Color(this.mat.color.r, this.mat.color.g, this.mat.color.b, value));
-
-        if (mode == 0) //default
-        {
-            mat.SetFloat("_Mode", 0); // opaque            
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            mat.SetInt("_ZWrite", 1);
-            mat.renderQueue = -1;
-        }
-        else if (mode == 1)
-        {
-            mat.SetFloat("_Mode", 3); // transparent
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            mat.SetInt("_ZWrite", 0);
-            mat.renderQueue = 3000;
-        }
-
-        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-        mat.DisableKeyword("_ALPHATEST_ON");
-        mat.DisableKeyword("_ALPHABLEND_ON");
-        mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-
-    }
-
-}
 
 // 미완성
 abstract class Skill : MonoBehaviour
 {
     public float damage;
     private float Damage { get { return damage; } }
-    public GameObject CharacterModel;
+    public GameObject[] CharacterModels;
 
-    public Skill(int damage_,GameObject characterModel)
+    public Skill(int damage_,GameObject[] characterModel_)
     {
         damage = damage_;
-        CharacterModel = characterModel;
+        CharacterModels = characterModel_;
     }
 
+    public abstract void OnSkillEventStart();
+
+    public abstract void OnSkillEvent();
+
+    public abstract void OnSkillEnd();
 }
+
+// 1. 파티클 생성
+// 2. 캐릭터 사라짐 , FOV 각도 커짐, 중력영향X, 이동
+// 3.  캐릭터 다시 보임, FOV 각도 점점 작아짐 , 파티클 생성
+
+class Teleport : Skill //텔레포트
+{
+    private ParticleSystem Particle;
+
+    Camera camera;
+    private float cameraDefaultFOV;
+
+    ChangeShader CharacterShader;
+    ChangeShader WandShader;
+
+    public Teleport(int damage_, ParticleSystem particle, GameObject[] characterModels,Camera Camera_) : base(damage_, characterModels)
+    {
+        Particle = particle;
+        camera = Camera_;
+        Particle.gameObject.SetActive(false);
+        Particle.Stop();
+        cameraDefaultFOV = camera.fieldOfView;
+
+        CharacterShader = new ChangeShader(characterModels[0]);
+        WandShader = new ChangeShader(characterModels[1]);
+    }
+
+    public override void OnSkillEventStart()
+    {
+        Particle.Play();
+        Particle.gameObject.SetActive(true);
+    }
+
+    public override void OnSkillEvent()
+    {
+        camera.fieldOfView = cameraDefaultFOV * 1.2f;
+        WandShader.ChangeTransparent(0.0f, 1);
+        CharacterShader.ChangeTransparent(0.0f, 1);
+    }
+
+    public override void OnSkillEnd()
+    {
+        Particle.Play();
+        CharacterShader.ChangeTransparent(1.0f, 0);
+        WandShader.ChangeTransparent(1.0f, 0);
+    }
+}
+
+
 /*
 class MainAttack : Skill //주공격(레이저빔쏘기)
 {
@@ -221,19 +211,59 @@ class ESkill : Skill // 블랙홀
     public ESkill(int damage_) : base(damage_) { }
 }
 */
-class Teleport : Skill //텔레포트
+
+
+    public class ChangeShader
 {
-    public float TeleportMoveSpeed;
-    public ParticleSystem Particle;
+    private Material mat;
+    private Shader shaderStandard;
+    private Renderer renderer;
+    private GameObject characterModel;
 
-    public Teleport(int damage_, ParticleSystem particle,GameObject characterModel) : base(damage_, characterModel)
+    public ChangeShader(GameObject characterModel_)
     {
-        Particle = particle;
-        Particle.gameObject.SetActive(false);
+        characterModel = characterModel_;
+
+        renderer = characterModel.GetComponent<Renderer>();
+        mat = renderer.material;
+        shaderStandard = Shader.Find("Standard");
+        if (!shaderStandard) Debug.Log("shaderStandard not Found");
+
+        if (!characterModel.GetComponent<SkinnedMeshRenderer>())
+        {
+            MeshRenderer meshrenderer = characterModel.GetComponent<MeshRenderer>();
+            meshrenderer.material.shader = shaderStandard;
+        }
+        else
+        {
+            SkinnedMeshRenderer meshrenderer = characterModel.GetComponent<SkinnedMeshRenderer>();
+            meshrenderer.material.shader = shaderStandard;
+        }
     }
 
-    public void OnSkillEvent()
+    public void ChangeTransparent(float value, int mode)
     {
-        Debug.Log("텔레포트");
+        mat.SetColor("_Color", new Color(this.mat.color.r, this.mat.color.g, this.mat.color.b, value));
+
+        if (mode == 0) //default
+        {
+            mat.SetFloat("_Mode", 0); // opaque            
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            mat.SetInt("_ZWrite", 1);
+            mat.renderQueue = -1;
+        }
+        else if (mode == 1)
+        {
+            mat.SetFloat("_Mode", 3); // transparent
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.renderQueue = 3000;
+        }
+
+        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        mat.DisableKeyword("_ALPHATEST_ON");
+        mat.DisableKeyword("_ALPHABLEND_ON");
+        mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
     }
+
 }

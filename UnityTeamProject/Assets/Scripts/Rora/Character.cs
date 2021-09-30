@@ -63,7 +63,9 @@ public class Character : MonoBehaviour
     private bool IsMoving = false;
 
 
-
+    // ==스킬 변수
+    [Range(5.0f, 15.0f)]
+    public float teleportDistance;
 
 
     private void Start()
@@ -151,6 +153,8 @@ public class Character : MonoBehaviour
         {
             state = PlayerState.Idle;
         }
+
+       
     }
 
 
@@ -246,13 +250,22 @@ public class Character : MonoBehaviour
         Direction = Vector3.zero;
 
         //방향 잡아주기
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        // Direction = new Vector3(10.0f, 0,10.0f);
-        Direction = new Vector3(horizontal+10.0f, 0, vertical + 10.0f);
-        Direction = Direction * MoveSpeed * Time.deltaTime;
-        Direction = transform.TransformDirection(Direction);
-        characterController.Move(Direction);
+       if (c_currentAngles.x < 0)
+        {
+            Direction = new Vector3(0, teleportDistance, 0.0f);
+            Direction = Direction * MoveSpeed * Time.deltaTime;
+            Direction = transform.TransformDirection(Direction);
+            characterController.Move(Direction);
+            Gravity = 0.0f;
+        }
+      else
+        {
+            Direction = new Vector3(0, 0 , teleportDistance);
+            Direction = Direction * MoveSpeed * Time.deltaTime;
+            Direction = transform.TransformDirection(Direction);
+            characterController.Move(Direction);
+        }
+        
     }
 
     void FSkill()
@@ -350,7 +363,6 @@ public class Character : MonoBehaviour
         c_currentAngles = camera.GetComponent<Transform>().localEulerAngles;
         c_currentAngles.x = VerticalAngle;
         camera.GetComponent<Transform>().localEulerAngles = c_currentAngles;
-
     }
 
     void TurnPlayer()
